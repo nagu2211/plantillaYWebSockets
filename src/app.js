@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 const httpServer = app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
@@ -25,12 +25,25 @@ const httpServer = app.listen(PORT, () => {
 
 const socketServer = new Server(httpServer);
 
+socketServer.on("connection", (socket) => {
+  console.log("cliente conectado");
+  // back envia msg al front
+  setInterval(() => {
+    socket.emit("msg_back_front", {
+      msg: "hola mundo desde back",
+      from: "server",
+    });
+  }, 1000);
+  // back ataja msg del front
+  socket.on("msg_front_back", (msg) => {
+    console.log(msg);
+  });
+});
+
 //Router
 app.use("/api/products/", productsRouter);
 app.use("/api/carts/", cartsRouter);
 app.use("/products", viewsRouter);
-
-
 
 app.get("*", (req, res) => {
   return res

@@ -12,6 +12,5 @@ viewsRouter.get("/", async (req, res) => {
 
 viewsRouter.get("/realtimeproducts", async (req, res) => {
   let promiseProducts = await allProducts;
-  console.log("cliente conectado");
   return res.status(200).render("realTimeProducts", { promiseProducts });
 });

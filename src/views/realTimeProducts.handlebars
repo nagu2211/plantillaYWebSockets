@@ -1,4 +1,24 @@
 <h1>Listo para trabajar con socket</h1>
+<section class="products">
+    <h1>ALL PRODUCTS</h1>
+    <div class="all-products">
+        {{#each promiseProducts}}
+        <div class="product">
+            <img src={{this.thumbnail}} alt="img-product">
+            <div class="product-info">
+                <h4 class="product-title">{{this.title}}</h4>
+                <p><span>id <i class="fa-solid fa-arrow-down"></i></span><br>{{this.id}}</p>
+                <p><span>description <i class="fa-solid fa-arrow-down"></i></span><br>{{this.description}}</p>
+                <p><span>code <i class="fa-solid fa-arrow-down"></i></span><br>{{this.code}}</p>
+                <p><span>stock <i class="fa-solid fa-arrow-down"></i></span><br>{{this.stock}}k</p>
+                <p><span>category <i class="fa-solid fa-arrow-down"></i></span><br>{{this.category}}</p>
+                <p><span>price <i class="fa-solid fa-arrow-down"></i></span><br>${{this.price}}(ARS)/k</p>
+                <p><span>status <i class="fa-solid fa-arrow-down"></i></span><br>{{this.status}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</section>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
