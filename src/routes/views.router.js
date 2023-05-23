@@ -5,8 +5,13 @@ export const viewsRouter = express.Router();
 const productM = new productManager();
 const allProducts = productM.readProducts();
 
-
 viewsRouter.get("/", async (req, res) => {
-    let promiseProducts = await allProducts
-  return res.status(200).render("index",{promiseProducts})
+  let promiseProducts = await allProducts;
+  return res.status(200).render("home", { promiseProducts });
+});
+
+viewsRouter.get("/realtimeproducts", async (req, res) => {
+  let promiseProducts = await allProducts;
+  console.log("cliente conectado");
+  return res.status(200).render("realTimeProducts", { promiseProducts });
 });
