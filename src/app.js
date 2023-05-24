@@ -6,6 +6,10 @@ import { cartsRouter } from "./routes/carts.router.js";
 import { productsRouter } from "./routes/products.router.js";
 import { viewsRouter } from "./routes/views.router.js";
 import { __dirname } from "./utils.js";
+import productManager from './components/ProductManager.js'
+
+const productM = new productManager();
+const allProducts = productM.readProducts();
 
 const PORT = 8080;
 const app = express();
@@ -27,13 +31,20 @@ const socketServer = new Server(httpServer);
 
 socketServer.on("connection", (socket) => {
   console.log("cliente conectado");
+
+  socket.on("new-product", async (newProd)=>{
+    await productM.addProduct(newProd);
+    const promiseProducts = await allProducts
+    console.log(promiseProducts)
+    socketServer.emit("products", (promiseProducts) )
+  })
   // back envia msg al front
-  setInterval(() => {
-    socket.emit("msg_back_front", {
-      msg: "hola mundo desde back",
-      from: "server",
-    });
-  }, 1000);
+  // setInterval(() => {
+  //   socket.emit("msg_back_front", {
+  //     msg: "hola mundo desde back",
+  //     from: "server",
+  //   });
+  // }, 1000);
   // back ataja msg del front
   socket.on("msg_front_back", (msg) => {
     console.log(msg);

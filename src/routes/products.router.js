@@ -111,3 +111,4 @@ productsRouter.get("/:pid", async (req, res) => {
       .json({ status: "error", msg: "product not found", data: {} });
   }
 });
+
