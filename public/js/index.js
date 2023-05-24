@@ -11,7 +11,7 @@ const inputPrice = document.getElementById("form-price");
 const ProdForm = document.getElementById("prodForm")
 
 const inputId = document.getElementById("form-idProd");
-const delProdForm = document.getElementById("form-btn-del");
+const prodFormDel = document.getElementById("prodFormDel");
 
 
 ProdForm.addEventListener("submit", (e)=>{
@@ -26,6 +26,12 @@ ProdForm.addEventListener("submit", (e)=>{
         price: inputPrice.value
     }
     socket.emit("new-product", newProd)
+})
+
+prodFormDel.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const idProd = inputId.value
+    socket.emit("delete-product", idProd)
 })
 
 socket.on("products", (promiseProducts) => {

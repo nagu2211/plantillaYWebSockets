@@ -42,6 +42,12 @@ socketServer.on("connection", (socket) => {
 
   // Emitir los productos iniciales al cliente cuando se establece la conexión
   socket.emit("products", initialProducts);
+
+  socket.on("delete-product", async(idProd)=> {
+    await productM.deleteProduct(idProd)
+    const promiseProducts = await productM.readProducts();
+    socketServer.emit("products", promiseProducts)
+  })
 });
 
 
