@@ -28,19 +28,27 @@ ProdForm.addEventListener("submit", (e)=>{
     socket.emit("new-product", newProd)
 })
 
-socket.on("products", ({promiseProducts})=>{
-    console.log(promiseProducts)
-    document.getElementById("dinamicProd").innerHTML = promiseProducts.reduce((acc,item)=>{
-        return acc + "<p>" + JSON.stringify(item) + "</p>"
-    })
-})
-// front envia msg al back
-// setInterval(()=> {
-//     socket.emit('msg_front_back', {
-//         msg: 'hola mundo desde front',
-//         user: 'usuario anonimo'
-//     })
-// },1000)
+socket.on("products", (promiseProducts) => {
+    if (Array.isArray(promiseProducts)) {
+    const productsHtml = promiseProducts.reduce((acc, item) => {
+        return acc + `<div class="product">
+        <img src=${item.thumbnail} alt="img-product">
+        <div class="product-info">
+            <h4 class="product-title">${item.title}</h4>
+            <p><span>id <i class="fa-solid fa-arrow-down"></i></span><br>${item.id}</p>
+            <p><span>description <i class="fa-solid fa-arrow-down"></i></span><br>${item.description}</p>
+            <p><span>code <i class="fa-solid fa-arrow-down"></i></span><br>${item.code}</p>
+            <p><span>stock <i class="fa-solid fa-arrow-down"></i></span><br>${item.stock}k</p>
+            <p><span>category <i class="fa-solid fa-arrow-down"></i></span><br>${item.category}</p>
+            <p><span>price <i class="fa-solid fa-arrow-down"></i></span><br>$ ${item.price}(ARS)/k</p>
+            <p><span>status <i class="fa-solid fa-arrow-down"></i></span><br>${item.status}</p>
+        </div>
+    </div>`
+    }, "");
+    document.getElementById("dinamicProd").innerHTML = productsHtml;
+    }
+});
+
 
 // front ataja msg del back
 socket.on('msg_back_front', (msg)=>{

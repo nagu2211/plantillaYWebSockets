@@ -29,27 +29,21 @@ const httpServer = app.listen(PORT, () => {
 
 const socketServer = new Server(httpServer);
 
+const initialProducts = productM.readProducts();
+
 socketServer.on("connection", (socket) => {
   console.log("cliente conectado");
 
-  socket.on("new-product", async (newProd)=>{
+  socket.on("new-product", async (newProd) => {
     await productM.addProduct(newProd);
-    const promiseProducts = await allProducts
-    console.log(promiseProducts)
-    socketServer.emit("products", (promiseProducts) )
-  })
-  // back envia msg al front
-  // setInterval(() => {
-  //   socket.emit("msg_back_front", {
-  //     msg: "hola mundo desde back",
-  //     from: "server",
-  //   });
-  // }, 1000);
-  // back ataja msg del front
-  socket.on("msg_front_back", (msg) => {
-    console.log(msg);
+    const promiseProducts = await productM.readProducts();
+    socketServer.emit("products", promiseProducts);
   });
+
+  // Emitir los productos iniciales al cliente cuando se establece la conexión
+  socket.emit("products", initialProducts);
 });
+
 
 //Router
 app.use("/api/products/", productsRouter);

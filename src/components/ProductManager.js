@@ -7,10 +7,10 @@ export default class productManager {
     this.path = "./products.json";
   }
   readProducts = async () => {
-    let pStrings = await fs.readFile(this.path, "utf-8");
-    let parse = JSON.parse(pStrings);
-    return parse;
-  };
+  let pStrings = await fs.readFile(this.path, "utf-8");
+  let parse = JSON.parse(pStrings);
+  return parse;
+};
   addProduct = async ({
     title,
     description,
